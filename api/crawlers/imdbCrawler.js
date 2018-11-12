@@ -11,12 +11,12 @@ const imdbCrawler = {
       .then(body => {
         const $ = cheerio.load(body);
         const results = $("td.result_text");
-        var temp = results.map(parseResult);
-        return temp;
+        return results.map(parseResult);
       });
   }
 };
 
+// parses an imdb search result to get the title and description
 function parseResult(index, result) {
   const parsed = { title: "", description: "" };
   let parsingTitle = true;
@@ -37,16 +37,22 @@ function parseResult(index, result) {
   return parsed;
 }
 
-function extractNestedText(node, text = "") {
+// recursive function to combine all nested text nodes
+function extractNestedText(node) {
   // a text node is a leaf
   if (node.type === "text") {
-    return `${text}${node.data}`;
+    return node.data;
   }
   // traverse tree adding text to the string
+  let combinedText = "";
   for (let child of node.children) {
-    text = extractNestedText(child, text);
+    combinedText = `${combinedText}${extractNestedText(child)}`;
   }
-  return text;
+  // preserve hyperlink markup
+  if (node.type === "tag" && node.name === "a") {
+    return `<a href="${node.attribs.href}">${combinedText}</a>`;
+  }
+  return combinedText;
 }
 
 export default imdbCrawler;

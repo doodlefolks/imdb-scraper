@@ -12,7 +12,8 @@ router.route({
     })
   },
   handler: async ctx => {
-    const res = await crawler.search(ctx.query.q);
+    ctx.body = await crawler.search(ctx.query.q);
+    ctx.status = 404;
   }
 });
 
