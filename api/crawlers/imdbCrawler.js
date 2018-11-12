@@ -4,15 +4,17 @@ import cheerio from "cheerio";
 const baseSearchUrl = "https://www.imdb.com/find";
 
 const imdbCrawler = {
-  // fetches raw imdb search html
-  getRawResults: query => {
-    var encodedQuery = encodeURIComponent(query);
-    return fetch(`${baseSearchUrl}?q=${encodedQuery}`).then(res => res.text());
-  },
   // fetches imdb search results and parses them
   getParsedResults: async query => {
-    const body = await imdbCrawler.getRawResults(query);
-    const $ = cheerio.load(body);
+    var encodedQuery = encodeURIComponent(query);
+    const html = await fetch(`${baseSearchUrl}?q=${encodedQuery}`).then(res =>
+      res.text()
+    );
+    return imdbCrawler.parseResults(html);
+  },
+  // parses results from raw html
+  parseResults(html) {
+    const $ = cheerio.load(html);
     const results = $("td.result_text");
     const parsed = [];
     results.each((i, result) => parsed.push(parseResult(result)));
