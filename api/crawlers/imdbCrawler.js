@@ -4,20 +4,24 @@ import cheerio from "cheerio";
 const baseSearchUrl = "https://www.imdb.com/find";
 
 const imdbCrawler = {
-  search: query => {
+  // fetches raw imdb search html
+  getRawResults: query => {
     var encodedQuery = encodeURIComponent(query);
-    return fetch(`${baseSearchUrl}?q=${encodedQuery}`)
-      .then(res => res.text())
-      .then(body => {
-        const $ = cheerio.load(body);
-        const results = $("td.result_text");
-        return results.map(parseResult);
-      });
+    return fetch(`${baseSearchUrl}?q=${encodedQuery}`).then(res => res.text());
+  },
+  // fetches imdb search results and parses them
+  getParsedResults: async query => {
+    const body = await imdbCrawler.getRawResults(query);
+    const $ = cheerio.load(body);
+    const results = $("td.result_text");
+    const parsed = [];
+    results.each((i, result) => parsed.push(parseResult(result)));
+    return parsed;
   }
 };
 
 // parses an imdb search result to get the title and description
-function parseResult(index, result) {
+function parseResult(result) {
   const parsed = { title: "", description: "" };
   let parsingTitle = true;
   for (let i = 0; i < result.children.length; i++) {

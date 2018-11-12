@@ -12,8 +12,17 @@ router.route({
     })
   },
   handler: async ctx => {
-    ctx.body = await crawler.search(ctx.query.q);
-    ctx.status = 404;
+    const results = await crawler.getParsedResults(ctx.query.q);
+    ctx.body = results;
+    ctx.status = 200;
+  }
+});
+router.route({
+  method: "get",
+  path: "/healthcheck",
+  handler: async ctx => {
+    let test = await crawler.search("test");
+    ctx.status = test.length === 8 ? 200 : 404;
   }
 });
 
