@@ -1,13 +1,23 @@
 $(document).ready(function() {
-  var resultsHead = $("#results thead");
-  var resultsBody = $("#results tbody");
+  var resultsDiv = $("#results");
   $("#submit").click(function(e) {
     e.preventDefault();
     var query = $("#query").val();
     $.ajax({
       url: `http://localhost:3000/imdb?q=${query}`,
       success: function(results) {
+        var tableCategories = {};
         for (var result of results) {
+          if (tableCategories[result.category] == null) {
+            tableCategories[result.category] = $(
+              `<table>
+                <thead>
+                  <tr><th>${result.category}</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>`
+            );
+          }
           var row = $("<tr></tr>");
           var tableItem = $("<td></td>");
           tableItem.append($(`<span>${result.title}</span>`));
@@ -15,12 +25,13 @@ $(document).ready(function() {
             tableItem.append($(`<br><span>${result.description}</span>`));
           }
           row.append(tableItem);
-          resultsBody.append(row);
+          tableCategories[result.category].find("tbody").append(row);
         }
-        resultsHead.append($("<tr><th>Results</th></tr>"));
+        for (let category of Object.keys(tableCategories)) {
+          resultsDiv.append(tableCategories[category]);
+        }
       }
     });
-    resultsHead.html("");
-    resultsBody.html("");
+    resultsDiv.html("");
   });
 });
