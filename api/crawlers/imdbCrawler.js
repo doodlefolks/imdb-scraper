@@ -54,7 +54,9 @@ function extractNestedText(node) {
   }
   // preserve hyperlink markup
   if (node.type === "tag" && node.name === "a") {
-    return `<a href="${node.attribs.href}">${combinedText}</a>`;
+    return `<a href="https://www.imdb.com${
+      node.attribs.href
+    }">${combinedText}</a>`;
   }
   return combinedText;
 }
