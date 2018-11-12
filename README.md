@@ -5,6 +5,7 @@
 
 ```
 cd api
+npm i
 npm start
 ```
 
