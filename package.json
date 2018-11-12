@@ -1,0 +1,31 @@
+{
+  "name": "torch-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc .",
+    "lint": "eslint .",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "esm": "^3.0.84",
+    "koa": "^2.6.1",
+    "koa-joi-router": "^5.1.0",
+    "node-fetch": "^2.2.1",
+    "typescript": "^3.1.6"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.46",
+    "@types/node-fetch": "^2.1.2",
+    "eslint": "^5.8.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "prettier": "1.15.1",
+    "typescript-eslint-parser": "^20.1.1"
+  }
+}

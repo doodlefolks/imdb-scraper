@@ -1,0 +1,21 @@
+{
+  "plugins": ["prettier"],
+  "rules": {
+    "no-global-assign": [
+      "error",
+      {
+        "exceptions": ["require"]
+      }
+    ],
+    "prettier/prettier": "error"
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module"
+  }
+}
