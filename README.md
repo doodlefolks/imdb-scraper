@@ -1,7 +1,7 @@
 ## Running the application
 
 1. Clone repo
-2. Start the api
+2. Start the API
 
 ```
 cd api
