@@ -1,5 +1,5 @@
 import Router from "koa-joi-router";
-import crawler from "./crawlers/IMDBCrawler";
+import crawler from "./crawlers/imdbCrawler";
 
 const Joi = Router.Joi;
 const router = Router();
