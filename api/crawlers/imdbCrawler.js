@@ -17,17 +17,27 @@ const imdbCrawler = {
     const $ = cheerio.load(html);
     const results = $("td.result_text");
     const parsed = [];
-    results.each((i, result) => parsed.push(parseResult(result)));
+    results.each(function() {
+      parsed.push(parseResult($(this)));
+    });
     return parsed;
   }
 };
 
-// parses an imdb search result to get the title and description
-function parseResult(result) {
-  const parsed = { title: "", description: "" };
+// parses an imdb search result to get the title, description, and category
+function parseResult($result) {
+  const parsed = {
+    title: "",
+    description: "",
+    category: $result
+      .parents(".findSection")
+      .children(".findSectionHeader")
+      .text()
+  };
+
   let parsingTitle = true;
-  for (let i = 0; i < result.children.length; i++) {
-    let node = result.children[i];
+  for (let i = 0; i < $result[0].children.length; i++) {
+    let node = $result[0].children[i];
     // a <br> tag denotes beginning of description text
     if (node.type === "tag" && node.name === "br") {
       parsingTitle = false;
